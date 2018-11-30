@@ -37,7 +37,7 @@ variables:
   ACR.FullName: '$(ACR.Name).azurecr.io'
   ACR.Sku: 'Standard'
   AKS.KubeDeploymentYaml: '$(System.DefaultWorkingDirectory)/KubeDeployment.yml' # Update AKS.KubeDeploymentYaml if you want to use deployment file from repo instead of generated file.
-  AKS.DepoymentPort: '80'
+  AKS.DeploymentPort: '80'
   Azure.CreateResources: 'true' # Update Azure.CreateResources to false if you have already created resources like resource group, azure container registry and azure kubernetes cluster.
   System.Debug: 'false'
 
@@ -108,13 +108,16 @@ jobs:
     name: Hosted Ubuntu 1604
 
   steps:
-  - powershell: |
-      $KubeDeploymentYamlExists = Test-Path $(AKS.KubeDeploymentYaml)
-      Write-Host "##vso[task.setvariable variable=AKS.KubeDeploymentYamlExists;]$KubeDeploymentYamlExists"
+  - bash: |
+      if [ -f $(AKS.KubeDeploymentYaml) ]; then
+        echo "##vso[task.setvariable variable=AKS.KubeDeploymentYamlExists;]true"
+      else
+        echo "##vso[task.setvariable variable=AKS.KubeDeploymentYamlExists;]false"
+      fi
     displayName: 'Check kubernetes deployment yaml exists'
 
-  - powershell: |  
-       $kubeDeploymentYaml = "apiVersion: apps/v1beta1
+  - bash: |  
+       echo "apiVersion : apps/v1beta1
        kind: Deployment
        metadata:
          name: $(ACR.RepositoryName)
@@ -129,7 +132,7 @@ jobs:
              - name: $(ACR.RepositoryName)
                image: $(ACR.FullName)/$(ACR.ImageName)
                ports:
-               - containerPort: $(AKS.DepoymentPort)
+               - containerPort: $(AKS.DeploymentPort)
        ---
        apiVersion: v1
        kind: Service
@@ -138,11 +141,9 @@ jobs:
        spec:
          type: LoadBalancer
          ports:
-         - port: $(AKS.DepoymentPort)
+         - port: $(AKS.DeploymentPort)
          selector:
-           app: $(ACR.RepositoryName)"
-       
-       Set-Content -Path $(AKS.KubeDeploymentYaml) -Value $kubeDeploymentYaml 
+           app: $(ACR.RepositoryName)" > $(AKS.KubeDeploymentYaml)
     displayName: 'Generate kubernetes deployment yaml'
     condition: and(succeeded(), eq(variables['AKS.KubeDeploymentYamlExists'], 'False'))
 
