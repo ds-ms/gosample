@@ -73,7 +73,7 @@ jobs:
           CREATED_ACR=$(az acr create -n $(ACR.Name) -g $(Azure.ResourceGroupName) --sku $(ACR.Sku))
           echo "$CREATED_ACR"
         fi
-        CREATE_AKS=$(CREATE_AKS=$(az resource list --name $(Azure.ClusterName) -g $(Azure.ResourceGroupName) --resource-type Microsoft.ContainerService/managedClusters --query "[0].id"))
+        CREATE_AKS=$(az resource list --name $(Azure.ClusterName) -g $(Azure.ResourceGroupName) --resource-type Microsoft.ContainerService/managedClusters --query "[0].id")
         if [ -z "${CREATE_AKS}" ]
         then
           echo "Creating AKS cluster"
