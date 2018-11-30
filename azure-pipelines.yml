@@ -78,7 +78,7 @@ jobs:
         then
           echo "Creating AKS cluster"
           ssh-keygen -q -b 2048 -t rsa -f ssh_key -N ""
-          CREATED_AKS=$(az aks create -g $(Azure.ResourceGroupName) -n $(AKS.ClusterName) --ssh-key-value ./ssh_key.pub --service-principal $servicePrincipalId --client-key "${servicePrincipalKey}")
+          CREATED_AKS=$(az aks create -g $(Azure.ResourceGroupName) -n $(AKS.ClusterName) --ssh-key-value ./ssh_key.pub --service-principal $servicePrincipalID --client-key "${servicePrincipalKey}")
           echo $CREATED_AKS
         else
           echo "Create AKS cluster: false"
