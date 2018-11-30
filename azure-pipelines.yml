@@ -89,7 +89,6 @@ jobs:
             az role assignment create --assignee $CLIENT_ID --role Reader --scope $ACR_ID
           fi
         fi
-      fi
 
 - job: BuildImage
   displayName: Build
