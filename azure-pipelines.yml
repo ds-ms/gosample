@@ -17,7 +17,7 @@ variables:
   Azure.ResourceGroupName: 'dsmsgosample'
 
   # Update Azure.ServiceConnectionId value with AzureRm service endpoint.
-  Azure.ServiceConnectionId: 'cc11df34-8abd-4933-a5d7-92c950cd4b35'
+  Azure.ServiceConnectionId: '8eb2d317-eab9-4428-b0b7-eb095ec6285f'
 
   # Update Azure.Location value with Azure Location.
   Azure.Location: 'eastus'
