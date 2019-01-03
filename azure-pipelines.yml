@@ -29,7 +29,7 @@ variables:
   AKS.ClusterName: 'dsmsgosample'
 
   # Docker Container port
-  Container.Port: 5000
+  Container.Port: 80
 
   # ========================================================================
   #                           Optional variables 
@@ -42,7 +42,7 @@ variables:
   AKS.KubeDeploymentYaml: '$(Agent.TempDirectory)/KubeDeployment.yml' # Update AKS.KubeDeploymentYaml if you want to use deployment file from repo instead of generated file.
   AKS.DeploymentPort: '$(Container.Port)'
   Azure.CreateResources: 'true' # Update Azure.CreateResources to false if you have already created resources like resource group, azure container registry and azure kubernetes cluster.
-  System.Debug: 'false'
+  System.Debug: 'true'
 
 jobs:
 
