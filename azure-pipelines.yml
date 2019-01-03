@@ -50,7 +50,7 @@ jobs:
   displayName: Create resources
   condition: and(succeeded(), eq(variables['Azure.CreateResources'], 'true'))
 
-  pool: 'Default'
+  pool: 'Hosted Ubuntu 1604'
 
   steps:
   - task: AzureCLI@1
@@ -101,8 +101,7 @@ jobs:
   dependsOn: CreateResources
   condition: or(succeeded(), ne(variables['Azure.CreateResources'], 'true'))
 
-  pool:
-    name: 'Default'
+  pool: 'Hosted Ubuntu 1604'
 
   steps:
   - task: Docker@1
