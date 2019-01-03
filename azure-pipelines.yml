@@ -39,7 +39,7 @@ variables:
   ACR.ImageName: '$(ACR.Name):$(Build.BuildId)'
   ACR.FullName: '$(ACR.Name).azurecr.io'
   ACR.Sku: 'Standard'
-  AKS.KubeDeploymentYaml: '$(System.DefaultWorkingDirectory)/KubeDeployment.yml' # Update AKS.KubeDeploymentYaml if you want to use deployment file from repo instead of generated file.
+  AKS.KubeDeploymentYaml: '$(Agent.TempDirectory)/KubeDeployment.yml' # Update AKS.KubeDeploymentYaml if you want to use deployment file from repo instead of generated file.
   AKS.DeploymentPort: '$(Container.Port)'
   Azure.CreateResources: 'true' # Update Azure.CreateResources to false if you have already created resources like resource group, azure container registry and azure kubernetes cluster.
   System.Debug: 'false'
