@@ -50,8 +50,7 @@ jobs:
   displayName: Create resources
   condition: and(succeeded(), eq(variables['Azure.CreateResources'], 'true'))
 
-  pool:
-    name: 'Default'
+  pool: 'Default'
 
   steps:
   - task: AzureCLI@1
