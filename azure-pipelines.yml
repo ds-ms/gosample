@@ -50,7 +50,8 @@ jobs:
   displayName: Create resources
   condition: and(succeeded(), eq(variables['Azure.CreateResources'], 'true'))
 
-  pool: 'Hosted Ubuntu 1604'
+  pool:
+    vmImage: 'Ubuntu-16.04'
 
   steps:
   - task: AzureCLI@1
@@ -95,13 +96,13 @@ jobs:
         AKS_ID=$(az aks show --resource-group $(Azure.ResourceGroupName) --name $(AKS.ClusterName) --query "id" -o tsv)
         echo "AKS cluster: [$(AKS.ClusterName)](https://portal.azure.com/#resource${AKS_ID}/overview)" > $(System.DefaultWorkingDirectory)/azureCluster.md
         echo "##vso[task.addattachment type=Distributedtask.Core.Summary;name=AzureResources;]$(System.DefaultWorkingDirectory)/azureCluster.md"
-
 - job: BuildImage
   displayName: Build
   dependsOn: CreateResources
   condition: or(succeeded(), ne(variables['Azure.CreateResources'], 'true'))
 
-  pool: 'Hosted Ubuntu 1604'
+  pool:
+    vmImage: 'Ubuntu-16.04'
 
   steps:
   - task: Docker@1
@@ -127,7 +128,7 @@ jobs:
   condition: succeeded()
 
   pool:
-    pool: 'Hosted Ubuntu 1604'
+    vmImage: 'Ubuntu-16.04'
 
   steps:
   - bash: |
@@ -137,7 +138,6 @@ jobs:
         echo "##vso[task.setvariable variable=AKS.KubeDeploymentYamlExists;]false"
       fi
     displayName: 'Check kubernetes deployment yaml exists'
-
   - bash: |  
        echo "apiVersion : apps/v1beta1
        kind: Deployment
@@ -168,7 +168,6 @@ jobs:
            app: $(ACR.RepositoryName)" > $(AKS.KubeDeploymentYaml)
     displayName: 'Generate kubernetes deployment yaml'
     condition: and(succeeded(), eq(variables['AKS.KubeDeploymentYamlExists'], 'False'))
-
   - task: Kubernetes@1
     displayName: 'kubectl apply'
     inputs:
